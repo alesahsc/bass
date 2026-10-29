@@ -1,0 +1,485 @@
+{
+  "app": "Bass Practice Tracker",
+  "version": 2,
+  "songCount": 53,
+  "savedAt": "",
+  "state": {
+    "1": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "2": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "3": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "4": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "5": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "6": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "7": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "8": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "9": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "10": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "11": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "12": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "13": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "14": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "15": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "16": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "17": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "18": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "19": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "20": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "21": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "22": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "23": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "24": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "Eb Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "25": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "26": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "Eb Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "27": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "D Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "28": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "D Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "29": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "D Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "30": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "D Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "31": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "32": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "33": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "34": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "35": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "36": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "D Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "37": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "38": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "39": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "40": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "41": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "A-E-A-C-G-C (6-string custom)",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "42": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "C-E-A-D-G-C (6-string custom)",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "43": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "44": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "45": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "46": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "47": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "48": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "49": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "50": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "51": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "52": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "E Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    },
+    "53": {
+      "status": "Not started",
+      "confidence": 0,
+      "priority": "Medium",
+      "tuning": "Eb Standard",
+      "practiceCount": 0,
+      "lastPracticed": "",
+      "notes": ""
+    }
+  }
+}

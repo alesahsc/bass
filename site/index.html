@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101217">
+<title>Bass Practice Tracker — 53 Songs</title>
+<style>
+:root {
+  --bg:#0e1014; --panel:#151820; --panel2:#1b1f28; --line:#2a303b;
+  --text:#f5f7fb; --muted:#9aa4b2; --accent:#ffca3a;
+  --green:#24c875; --purple:#ad73ff; --orange:#ff9d38; --blue:#4ca6ff;
+  --red:#ff5f64; --shadow:0 14px 40px rgba(0,0,0,.28);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:linear-gradient(180deg,#0c0e12,#11141a 38%,#0e1014);color:var(--text);
+font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}
+button,input,select,textarea{font:inherit}
+a{color:inherit;text-decoration:none}
+.container{max-width:1220px;margin:auto;padding:22px 18px 80px}
+.hero{display:flex;gap:18px;justify-content:space-between;align-items:flex-end;margin:10px 0 18px}
+.eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:800}
+h1{margin:5px 0 4px;font-size:clamp(30px,5vw,54px);line-height:1}
+.subtitle{color:var(--muted);font-size:14px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.btn{border:1px solid var(--line);background:#191d25;color:var(--text);border-radius:11px;padding:9px 12px;cursor:pointer;font-weight:700}
+.btn:hover{background:#222733}
+.btn.primary{background:var(--accent);color:#171717;border-color:transparent}
+.grid-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0}
+.stat{background:rgba(21,24,32,.88);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:var(--shadow)}
+.stat b{display:block;font-size:26px;margin-top:4px}
+.stat span{color:var(--muted);font-size:12px}
+.progress-wrap{height:9px;background:#252a34;border-radius:999px;overflow:hidden;margin-top:9px}
+.progress{height:100%;background:linear-gradient(90deg,#ffca3a,#24c875);width:0%;transition:.25s}
+.toolbar{position:sticky;top:0;z-index:20;background:rgba(14,16,20,.92);backdrop-filter:blur(14px);padding:10px 0 12px;margin:8px 0 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+.toolbar-grid{display:grid;grid-template-columns:2fr repeat(3,1fr);gap:8px}
+.control{width:100%;background:#171b22;color:var(--text);border:1px solid var(--line);border-radius:11px;padding:10px 12px;outline:none}
+.legend{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 15px}
+.legend span,.tuning-pill{border-radius:999px;padding:5px 9px;font-size:11px;font-weight:800;white-space:nowrap}
+.tune-e{background:rgba(36,200,117,.16);color:#5be79d;border:1px solid rgba(36,200,117,.34)}
+.tune-eb{background:rgba(173,115,255,.16);color:#c89cff;border:1px solid rgba(173,115,255,.34)}
+.tune-d{background:rgba(255,157,56,.15);color:#ffb76c;border:1px solid rgba(255,157,56,.34)}
+.tune-custom{background:rgba(76,166,255,.15);color:#7dbdff;border:1px solid rgba(76,166,255,.34)}
+.list{display:grid;gap:10px}
+.song{background:rgba(21,24,32,.92);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:0 7px 20px rgba(0,0,0,.16)}
+.song-top{display:grid;grid-template-columns:44px minmax(220px,1.4fr) 170px 145px 165px 120px;gap:10px;align-items:center}
+.num{width:38px;height:38px;border-radius:12px;background:#202530;display:grid;place-items:center;font-weight:900;color:#ccd3de}
+.title{font-size:16px;font-weight:850;line-height:1.2}
+.artist{font-size:12px;color:var(--muted);margin-top:4px}
+.status,.tuning-select,.priority{width:100%;background:#101319;color:var(--text);border:1px solid var(--line);border-radius:9px;padding:8px}
+.confidence{display:flex;align-items:center;gap:5px}
+.confidence button{width:25px;height:25px;border-radius:7px;background:#101319;border:1px solid var(--line);color:#697485;cursor:pointer;padding:0}
+.confidence button.on{background:var(--accent);color:#171717;border-color:var(--accent);font-weight:900}
+.practice-btn{background:#232a35;border:1px solid #343c49;color:#fff;border-radius:9px;padding:8px 9px;font-weight:750;cursor:pointer}
+.practice-btn:hover{background:#303846}
+.song-bottom{display:grid;grid-template-columns:1fr auto;gap:12px;margin-top:11px;padding-top:11px;border-top:1px solid #252a33}
+.meta{display:flex;gap:12px;flex-wrap:wrap;align-items:center;color:var(--muted);font-size:12px}
+.notes{width:100%;min-height:38px;max-height:100px;resize:vertical;background:#11151b;color:var(--text);border:1px solid var(--line);border-radius:9px;padding:8px}
+.links{display:flex;gap:6px;align-items:start;flex-wrap:wrap;justify-content:flex-end}
+.linkbtn{border:1px solid var(--line);background:#11151b;color:#cfd6e2;border-radius:8px;padding:7px 8px;font-size:11px;font-weight:750}
+.linkbtn:hover{border-color:#596477;color:white}
+.ready{border-color:rgba(36,200,117,.5);box-shadow:inset 3px 0 0 var(--green),0 7px 20px rgba(0,0,0,.16)}
+.empty{display:none;text-align:center;color:var(--muted);padding:35px}
+.footer{color:#6f7988;font-size:11px;text-align:center;margin-top:22px}
+.badge-today{color:#71e6a6;font-weight:800}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;place-items:center;z-index:50;padding:20px}
+.modal.show{display:grid}
+.modal-card{width:min(620px,100%);background:#171b22;border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+.modal-card h2{margin-top:0}
+.modal-card textarea{width:100%;height:180px;background:#0f1217;color:white;border:1px solid var(--line);border-radius:10px;padding:10px}
+.small{font-size:12px;color:var(--muted)}
+@media (max-width:900px){
+  .hero{align-items:flex-start;flex-direction:column}
+  .actions{justify-content:flex-start}
+  .grid-stats{grid-template-columns:repeat(2,1fr)}
+  .toolbar-grid{grid-template-columns:1fr 1fr}
+  .toolbar-grid .search{grid-column:1/-1}
+  .song-top{grid-template-columns:42px 1fr 145px}
+  .tuning-cell{grid-column:2/3}
+  .priority-cell{grid-column:3/4}
+  .confidence-cell{grid-column:2/3}
+  .practice-cell{grid-column:3/4}
+}
+@media (max-width:620px){
+  .container{padding:14px 10px 60px}
+  .grid-stats{grid-template-columns:1fr 1fr}
+  .toolbar-grid{grid-template-columns:1fr 1fr}
+  .song{padding:12px}
+  .song-top{grid-template-columns:38px 1fr}
+  .status-cell,.tuning-cell,.priority-cell,.confidence-cell,.practice-cell{grid-column:auto}
+  .status-cell,.priority-cell{grid-column:1/-1}
+  .tuning-cell{grid-column:1/-1}
+  .confidence-cell{grid-column:1/2}
+  .practice-cell{grid-column:2/3}
+  .song-bottom{grid-template-columns:1fr}
+  .links{justify-content:flex-start}
+  .title{font-size:15px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <section class="hero">
+    <div>
+      <div class="eyebrow">Personal Bass Rehearsal System</div>
+      <h1>Bass Practice Tracker</h1>
+      <div class="subtitle">53-song master setlist • sign in to sync between devices</div>
+      <div class="subtitle" id="fileStatus" style="margin-top:7px">Data file: <b>not connected</b> — local browser backup is still enabled.</div>
+    </div>
+    <div class="actions">
+      <button class="btn primary" id="connectFileBtn">Connect TXT Data File</button>
+      <button class="btn" id="loadTxtBtn">Load TXT</button>
+      <button class="btn" id="saveTxtBtn">Save TXT</button>
+      <button class="btn" id="resetBtn">Reset</button>
+      <button class="btn" id="practiceFilterBtn">Needs practice</button>
+      <input id="txtFileInput" type="file" accept=".txt,.json,text/plain,application/json" hidden>
+    </div>
+  </section>
+
+  <section class="song" aria-label="Cloud sync">
+  <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+    <strong>Cloud sync</strong><span id="cloudStatus" class="small" role="status">Not connected</span>
+    <button class="btn" id="cloudSettingsBtn">Cloud settings</button>
+    <button class="btn" id="signOutBtn" hidden>Sign out</button>
+  </div>
+  <form id="cloudSettings" hidden style="margin-top:12px">
+    <p class="small">Enter your Supabase project URL and public publishable (or anon) key. Never enter a secret or service role key.</p>
+    <input class="control" id="projectUrl" type="url" placeholder="https://your-project.supabase.co" aria-label="Supabase project URL" required>
+    <input class="control" id="projectKey" placeholder="Public publishable key" aria-label="Public publishable key" required>
+    <button class="btn" type="submit">Save connection</button>
+  </form>
+  <form id="cloudLogin" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
+    <input class="control" style="flex:1;min-width:180px" id="email" type="email" autocomplete="username" placeholder="Email" aria-label="Email" required>
+    <input class="control" style="flex:1;min-width:180px" id="password" type="password" autocomplete="current-password" minlength="8" placeholder="Password (8+ characters)" aria-label="Password" required>
+    <button class="btn primary" type="submit">Sign in</button><button class="btn" type="submit" id="signUpBtn">Create account</button>
+  </form>
+  <p class="small">Browser progress saves automatically. Cloud sync requires a connection and sign-in. TXT remains available for backups.</p>
+</section>
+<section class="grid-stats">
+    <div class="stat"><span>Overall readiness</span><b id="overallPct">0%</b><div class="progress-wrap"><div id="overallBar" class="progress"></div></div></div>
+    <div class="stat"><span>Performance ready</span><b id="readyCount">0 / 53</b></div>
+    <div class="stat"><span>Practiced today</span><b id="todayCount">0</b></div>
+    <div class="stat"><span>Total practice check-ins</span><b id="sessionCount">0</b></div>
+  </section>
+
+  <section class="toolbar">
+    <div class="toolbar-grid">
+      <input class="control search" id="search" placeholder="Search song or artist…">
+      <select class="control" id="tuningFilter">
+        <option value="">All tunings</option>
+        <option>E Standard</option>
+        <option>Eb Standard</option>
+        <option>D Standard</option>
+        <option value="custom">Custom 6-string</option>
+      </select>
+      <select class="control" id="statusFilter">
+        <option value="">All statuses</option>
+        <option>Not started</option>
+        <option>Learning</option>
+        <option>Can play</option>
+        <option>Memorized</option>
+        <option>Performance ready</option>
+      </select>
+      <select class="control" id="sortBy">
+        <option value="setlist">Setlist order</option>
+        <option value="needs">Needs practice first</option>
+        <option value="confidence">Lowest confidence</option>
+        <option value="recent">Least recently practiced</option>
+        <option value="artist">Artist A–Z</option>
+      </select>
+    </div>
+  </section>
+
+  <div class="legend">
+    <span class="tune-e">E Standard</span>
+    <span class="tune-eb">E♭ Standard</span>
+    <span class="tune-d">D Standard</span>
+    <span class="tune-custom">Custom 6-string</span>
+  </div>
+
+  <main id="songList" class="list"></main>
+  <div id="empty" class="empty">No songs match the current filters.</div>
+  <div class="footer">TXT mode: on Chrome/Edge desktop, “Connect TXT Data File” enables direct auto-save to a chosen text file. On Safari/iPhone/iPad, use “Save TXT” and “Load TXT”. A local browser backup is also kept as a safety copy.</div>
+</div>
+
+<script src="cloud-config.js"></script>
+<script>
+const SONGS = [{"id": 1, "title": "Another Brick in the Wall (Part 2)", "artist": "Pink Floyd", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Pink+Floyd+Another+Brick+in+the+Wall+%28Part+2%29+official", "live": "https://www.youtube.com/results?search_query=Pink+Floyd+Another+Brick+in+the+Wall+%28Part+2%29+live", "bass": "https://www.youtube.com/results?search_query=Pink+Floyd+Another+Brick+in+the+Wall+%28Part+2%29+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Pink+Floyd+Another+Brick+in+the+Wall+%28Part+2%29"}}, {"id": 2, "title": "Whole Lotta Love", "artist": "Led Zeppelin", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Led+Zeppelin+Whole+Lotta+Love+official", "live": "https://www.youtube.com/results?search_query=Led+Zeppelin+Whole+Lotta+Love+live", "bass": "https://www.youtube.com/results?search_query=Led+Zeppelin+Whole+Lotta+Love+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Led+Zeppelin+Whole+Lotta+Love"}}, {"id": 3, "title": "Breaking the Law", "artist": "Judas Priest", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Judas+Priest+Breaking+the+Law+official", "live": "https://www.youtube.com/results?search_query=Judas+Priest+Breaking+the+Law+live", "bass": "https://www.youtube.com/results?search_query=Judas+Priest+Breaking+the+Law+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Judas+Priest+Breaking+the+Law"}}, {"id": 4, "title": "Mistreated", "artist": "Whitesnake", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Whitesnake+Mistreated+Live+in+the+Heart+of+the+City", "live": "https://www.youtube.com/results?search_query=Whitesnake+Mistreated+live", "bass": "https://www.youtube.com/results?search_query=Whitesnake+Mistreated+bass+cover+tab", "tab": "https://www.songsterr.com/a/wsa/whitesnake-tabs-a5901?inst=bass"}}, {"id": 5, "title": "War Pigs", "artist": "Black Sabbath", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Black+Sabbath+War+Pigs+official", "live": "https://www.youtube.com/results?search_query=Black+Sabbath+War+Pigs+live", "bass": "https://www.youtube.com/results?search_query=Black+Sabbath+War+Pigs+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Black+Sabbath+War+Pigs"}}, {"id": 6, "title": "Nothing Else Matters", "artist": "Metallica", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Metallica+Nothing+Else+Matters+official", "live": "https://www.youtube.com/results?search_query=Metallica+Nothing+Else+Matters+live", "bass": "https://www.youtube.com/results?search_query=Metallica+Nothing+Else+Matters+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Metallica+Nothing+Else+Matters"}}, {"id": 7, "title": "Master of Puppets", "artist": "Metallica", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Metallica+Master+of+Puppets+official", "live": "https://www.youtube.com/results?search_query=Metallica+Master+of+Puppets+live", "bass": "https://www.youtube.com/results?search_query=Metallica+Master+of+Puppets+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Metallica+Master+of+Puppets"}}, {"id": 8, "title": "Symphony of Destruction", "artist": "Megadeth", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Megadeth+Symphony+of+Destruction+official", "live": "https://www.youtube.com/results?search_query=Megadeth+Symphony+of+Destruction+live", "bass": "https://www.youtube.com/results?search_query=Megadeth+Symphony+of+Destruction+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Megadeth+Symphony+of+Destruction"}}, {"id": 9, "title": "Enter Sandman", "artist": "Metallica", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Metallica+Enter+Sandman+official", "live": "https://www.youtube.com/results?search_query=Metallica+Enter+Sandman+live", "bass": "https://www.youtube.com/results?search_query=Metallica+Enter+Sandman+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Metallica+Enter+Sandman"}}, {"id": 10, "title": "Seek & Destroy", "artist": "Metallica", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Metallica+Seek+%26+Destroy+official", "live": "https://www.youtube.com/results?search_query=Metallica+Seek+%26+Destroy+live", "bass": "https://www.youtube.com/results?search_query=Metallica+Seek+%26+Destroy+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Metallica+Seek+%26+Destroy"}}, {"id": 11, "title": "Cowboys from Hell", "artist": "Pantera", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Pantera+Cowboys+from+Hell+official", "live": "https://www.youtube.com/results?search_query=Pantera+Cowboys+from+Hell+live", "bass": "https://www.youtube.com/results?search_query=Pantera+Cowboys+from+Hell+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Pantera+Cowboys+from+Hell"}}, {"id": 12, "title": "Hysteria", "artist": "Muse", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Muse+Hysteria+official", "live": "https://www.youtube.com/results?search_query=Muse+Hysteria+live", "bass": "https://www.youtube.com/results?search_query=Muse+Hysteria+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Muse+Hysteria"}}, {"id": 13, "title": "Tom Sawyer", "artist": "Rush", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Rush+Tom+Sawyer+official", "live": "https://www.youtube.com/results?search_query=Rush+Tom+Sawyer+live", "bass": "https://www.youtube.com/results?search_query=Rush+Tom+Sawyer+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Rush+Tom+Sawyer"}}, {"id": 14, "title": "For Whom the Bell Tolls", "artist": "Metallica", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Metallica+For+Whom+the+Bell+Tolls+official", "live": "https://www.youtube.com/results?search_query=Metallica+For+Whom+the+Bell+Tolls+live", "bass": "https://www.youtube.com/results?search_query=Metallica+For+Whom+the+Bell+Tolls+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Metallica+For+Whom+the+Bell+Tolls"}}, {"id": 15, "title": "Immigrant Song", "artist": "Led Zeppelin", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Led+Zeppelin+Immigrant+Song+official", "live": "https://www.youtube.com/results?search_query=Led+Zeppelin+Immigrant+Song+live", "bass": "https://www.youtube.com/results?search_query=Led+Zeppelin+Immigrant+Song+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Led+Zeppelin+Immigrant+Song"}}, {"id": 16, "title": "Smoke on the Water", "artist": "Deep Purple", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Deep+Purple+Smoke+on+the+Water+official", "live": "https://www.youtube.com/results?search_query=Deep+Purple+Smoke+on+the+Water+live", "bass": "https://www.youtube.com/results?search_query=Deep+Purple+Smoke+on+the+Water+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Deep+Purple+Smoke+on+the+Water"}}, {"id": 17, "title": "Cemetery Gates", "artist": "Pantera", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Pantera+Cemetery+Gates+official", "live": "https://www.youtube.com/results?search_query=Pantera+Cemetery+Gates+live", "bass": "https://www.youtube.com/results?search_query=Pantera+Cemetery+Gates+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Pantera+Cemetery+Gates"}}, {"id": 18, "title": "Iron Man", "artist": "Black Sabbath", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Black+Sabbath+Iron+Man+official", "live": "https://www.youtube.com/results?search_query=Black+Sabbath+Iron+Man+live", "bass": "https://www.youtube.com/results?search_query=Black+Sabbath+Iron+Man+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Black+Sabbath+Iron+Man"}}, {"id": 19, "title": "Kashmir", "artist": "Led Zeppelin", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Led+Zeppelin+Kashmir+official", "live": "https://www.youtube.com/results?search_query=Led+Zeppelin+Kashmir+live", "bass": "https://www.youtube.com/results?search_query=Led+Zeppelin+Kashmir+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Led+Zeppelin+Kashmir"}}, {"id": 20, "title": "Jesus Saves", "artist": "Savatage", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Savatage+Jesus+Saves+official", "live": "https://www.youtube.com/results?search_query=Savatage+Jesus+Saves+live", "bass": "https://www.youtube.com/results?search_query=Savatage+Jesus+Saves+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Savatage+Jesus+Saves"}}, {"id": 21, "title": "Thunderstruck", "artist": "AC/DC", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=AC%2FDC+Thunderstruck+official", "live": "https://www.youtube.com/results?search_query=AC%2FDC+Thunderstruck+live", "bass": "https://www.youtube.com/results?search_query=AC%2FDC+Thunderstruck+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=AC%2FDC+Thunderstruck"}}, {"id": 22, "title": "Domination", "artist": "Pantera", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Pantera+Domination+official", "live": "https://www.youtube.com/results?search_query=Pantera+Domination+live", "bass": "https://www.youtube.com/results?search_query=Pantera+Domination+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Pantera+Domination"}}, {"id": 23, "title": "Paranoid", "artist": "Black Sabbath", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Black+Sabbath+Paranoid+official", "live": "https://www.youtube.com/results?search_query=Black+Sabbath+Paranoid+live", "bass": "https://www.youtube.com/results?search_query=Black+Sabbath+Paranoid+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Black+Sabbath+Paranoid"}}, {"id": 24, "title": "Heaven and Hell", "artist": "Black Sabbath", "tuning": "Eb Standard", "links": {"original": "https://www.youtube.com/results?search_query=Black+Sabbath+Heaven+and+Hell+official", "live": "https://www.youtube.com/results?search_query=Black+Sabbath+Heaven+and+Hell+live", "bass": "https://www.youtube.com/results?search_query=Black+Sabbath+Heaven+and+Hell+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Black+Sabbath+Heaven+and+Hell"}}, {"id": 25, "title": "T.N.T.", "artist": "AC/DC", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=AC%2FDC+T.N.T.+official", "live": "https://www.youtube.com/results?search_query=AC%2FDC+T.N.T.+live", "bass": "https://www.youtube.com/results?search_query=AC%2FDC+T.N.T.+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=AC%2FDC+T.N.T."}}, {"id": 26, "title": "Sweet Child O' Mine", "artist": "Guns N' Roses", "tuning": "Eb Standard", "links": {"original": "https://www.youtube.com/results?search_query=Guns+N%27+Roses+Sweet+Child+O%27+Mine+official", "live": "https://www.youtube.com/results?search_query=Guns+N%27+Roses+Sweet+Child+O%27+Mine+live", "bass": "https://www.youtube.com/results?search_query=Guns+N%27+Roses+Sweet+Child+O%27+Mine+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Guns+N%27+Roses+Sweet+Child+O%27+Mine"}}, {"id": 27, "title": "Walk", "artist": "Pantera", "tuning": "D Standard", "links": {"original": "https://www.youtube.com/results?search_query=Pantera+Walk+official", "live": "https://www.youtube.com/results?search_query=Pantera+Walk+live", "bass": "https://www.youtube.com/results?search_query=Pantera+Walk+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Pantera+Walk"}}, {"id": 28, "title": "5 Minutes Alone", "artist": "Pantera", "tuning": "D Standard", "links": {"original": "https://www.youtube.com/results?search_query=Pantera+5+Minutes+Alone+official", "live": "https://www.youtube.com/results?search_query=Pantera+5+Minutes+Alone+live", "bass": "https://www.youtube.com/results?search_query=Pantera+5+Minutes+Alone+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Pantera+5+Minutes+Alone"}}, {"id": 29, "title": "Sad but True", "artist": "Metallica", "tuning": "D Standard", "links": {"original": "https://www.youtube.com/results?search_query=Metallica+Sad+but+True+official", "live": "https://www.youtube.com/results?search_query=Metallica+Sad+but+True+live", "bass": "https://www.youtube.com/results?search_query=Metallica+Sad+but+True+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Metallica+Sad+but+True"}}, {"id": 30, "title": "Territory", "artist": "Sepultura", "tuning": "D Standard", "links": {"original": "https://www.youtube.com/results?search_query=Sepultura+Territory+official", "live": "https://www.youtube.com/results?search_query=Sepultura+Territory+live", "bass": "https://www.youtube.com/results?search_query=Sepultura+Territory+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Sepultura+Territory"}}, {"id": 31, "title": "No More Tears", "artist": "Ozzy Osbourne", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Ozzy+Osbourne+No+More+Tears+official", "live": "https://www.youtube.com/results?search_query=Ozzy+Osbourne+No+More+Tears+live", "bass": "https://www.youtube.com/results?search_query=Ozzy+Osbourne+No+More+Tears+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Ozzy+Osbourne+No+More+Tears"}}, {"id": 32, "title": "YYZ", "artist": "Rush", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Rush+YYZ+official", "live": "https://www.youtube.com/results?search_query=Rush+YYZ+live", "bass": "https://www.youtube.com/results?search_query=Rush+YYZ+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Rush+YYZ"}}, {"id": 33, "title": "Ace of Spades", "artist": "Motörhead", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Mot%C3%B6rhead+Ace+of+Spades+official", "live": "https://www.youtube.com/results?search_query=Mot%C3%B6rhead+Ace+of+Spades+live", "bass": "https://www.youtube.com/results?search_query=Mot%C3%B6rhead+Ace+of+Spades+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Mot%C3%B6rhead+Ace+of+Spades"}}, {"id": 34, "title": "Gimme! Gimme! Gimme! (A Man After Midnight)", "artist": "ABBA", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=ABBA+Gimme%21+Gimme%21+Gimme%21+%28A+Man+After+Midnight%29+official", "live": "https://www.youtube.com/results?search_query=ABBA+Gimme%21+Gimme%21+Gimme%21+%28A+Man+After+Midnight%29+live", "bass": "https://www.youtube.com/results?search_query=ABBA+Gimme%21+Gimme%21+Gimme%21+%28A+Man+After+Midnight%29+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=ABBA+Gimme%21+Gimme%21+Gimme%21+%28A+Man+After+Midnight%29"}}, {"id": 35, "title": "Beggin'", "artist": "Måneskin", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=M%C3%A5neskin+Beggin%27+official", "live": "https://www.youtube.com/results?search_query=M%C3%A5neskin+Beggin%27+live", "bass": "https://www.youtube.com/results?search_query=M%C3%A5neskin+Beggin%27+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=M%C3%A5neskin+Beggin%27"}}, {"id": 36, "title": "Domination", "artist": "Symphony X", "tuning": "D Standard", "links": {"original": "https://www.youtube.com/results?search_query=Symphony+X+Domination+official", "live": "https://www.youtube.com/results?search_query=Symphony+X+Domination+live", "bass": "https://www.youtube.com/results?search_query=Symphony+X+Domination+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Symphony+X+Domination"}}, {"id": 37, "title": "Song 2", "artist": "Blur", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Blur+Song+2+official", "live": "https://www.youtube.com/results?search_query=Blur+Song+2+live", "bass": "https://www.youtube.com/results?search_query=Blur+Song+2+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Blur+Song+2"}}, {"id": 38, "title": "Eye of the Tiger", "artist": "Survivor", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Survivor+Eye+of+the+Tiger+official", "live": "https://www.youtube.com/results?search_query=Survivor+Eye+of+the+Tiger+live", "bass": "https://www.youtube.com/results?search_query=Survivor+Eye+of+the+Tiger+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Survivor+Eye+of+the+Tiger"}}, {"id": 39, "title": "I Was Made for Lovin' You", "artist": "KISS", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=KISS+I+Was+Made+for+Lovin%27+You+official", "live": "https://www.youtube.com/results?search_query=KISS+I+Was+Made+for+Lovin%27+You+live", "bass": "https://www.youtube.com/results?search_query=KISS+I+Was+Made+for+Lovin%27+You+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=KISS+I+Was+Made+for+Lovin%27+You"}}, {"id": 40, "title": "Pull Me Under", "artist": "Dream Theater", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Dream+Theater+Pull+Me+Under+official", "live": "https://www.youtube.com/results?search_query=Dream+Theater+Pull+Me+Under+live", "bass": "https://www.youtube.com/results?search_query=Dream+Theater+Pull+Me+Under+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Dream+Theater+Pull+Me+Under"}}, {"id": 41, "title": "Panic Attack", "artist": "Dream Theater", "tuning": "A-E-A-C-G-C (6-string custom)", "links": {"original": "https://www.youtube.com/results?search_query=Dream+Theater+Panic+Attack+official", "live": "https://www.youtube.com/results?search_query=Dream+Theater+Panic+Attack+live", "bass": "https://www.youtube.com/results?search_query=Dream+Theater+Panic+Attack+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Dream+Theater+Panic+Attack"}}, {"id": 42, "title": "As I Am", "artist": "Dream Theater", "tuning": "C-E-A-D-G-C (6-string custom)", "links": {"original": "https://www.youtube.com/results?search_query=Dream+Theater+As+I+Am+official", "live": "https://www.youtube.com/results?search_query=Dream+Theater+As+I+Am+live", "bass": "https://www.youtube.com/results?search_query=Dream+Theater+As+I+Am+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Dream+Theater+As+I+Am"}}, {"id": 43, "title": "Money", "artist": "Pink Floyd", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Pink+Floyd+Money+official", "live": "https://www.youtube.com/results?search_query=Pink+Floyd+Money+live", "bass": "https://www.youtube.com/results?search_query=Pink+Floyd+Money+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Pink+Floyd+Money"}}, {"id": 44, "title": "Another One Bites the Dust", "artist": "Queen", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Queen+Another+One+Bites+the+Dust+official", "live": "https://www.youtube.com/results?search_query=Queen+Another+One+Bites+the+Dust+live", "bass": "https://www.youtube.com/results?search_query=Queen+Another+One+Bites+the+Dust+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Queen+Another+One+Bites+the+Dust"}}, {"id": 45, "title": "Jailhouse Rock", "artist": "Elvis Presley", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Elvis+Presley+Jailhouse+Rock+official", "live": "https://www.youtube.com/results?search_query=Elvis+Presley+Jailhouse+Rock+live", "bass": "https://www.youtube.com/results?search_query=Elvis+Presley+Jailhouse+Rock+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Elvis+Presley+Jailhouse+Rock"}}, {"id": 46, "title": "Holy Diver", "artist": "Dio", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Dio+Holy+Diver+official", "live": "https://www.youtube.com/results?search_query=Dio+Holy+Diver+live", "bass": "https://www.youtube.com/results?search_query=Dio+Holy+Diver+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Dio+Holy+Diver"}}, {"id": 47, "title": "Creeping Death", "artist": "Metallica", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Metallica+Creeping+Death+official", "live": "https://www.youtube.com/results?search_query=Metallica+Creeping+Death+live", "bass": "https://www.youtube.com/results?search_query=Metallica+Creeping+Death+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Metallica+Creeping+Death"}}, {"id": 48, "title": "Wherever I May Roam", "artist": "Metallica", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Metallica+Wherever+I+May+Roam+official", "live": "https://www.youtube.com/results?search_query=Metallica+Wherever+I+May+Roam+live", "bass": "https://www.youtube.com/results?search_query=Metallica+Wherever+I+May+Roam+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Metallica+Wherever+I+May+Roam"}}, {"id": 49, "title": "Billie Jean", "artist": "Michael Jackson", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Michael+Jackson+Billie+Jean+official", "live": "https://www.youtube.com/results?search_query=Michael+Jackson+Billie+Jean+live", "bass": "https://www.youtube.com/results?search_query=Michael+Jackson+Billie+Jean+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Michael+Jackson+Billie+Jean"}}, {"id": 50, "title": "Highway to Hell", "artist": "AC/DC", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=AC%2FDC+Highway+to+Hell+official", "live": "https://www.youtube.com/results?search_query=AC%2FDC+Highway+to+Hell+live", "bass": "https://www.youtube.com/results?search_query=AC%2FDC+Highway+to+Hell+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=AC%2FDC+Highway+to+Hell"}}, {"id": 51, "title": "Sway", "artist": "Michael Bublé", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Michael+Bubl%C3%A9+Sway+official", "live": "https://www.youtube.com/results?search_query=Michael+Bubl%C3%A9+Sway+live", "bass": "https://www.youtube.com/results?search_query=Michael+Bubl%C3%A9+Sway+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Michael+Bubl%C3%A9+Sway"}}, {"id": 52, "title": "Hotel California", "artist": "Eagles", "tuning": "E Standard", "links": {"original": "https://www.youtube.com/results?search_query=Eagles+Hotel+California+official", "live": "https://www.youtube.com/results?search_query=Eagles+Hotel+California+live", "bass": "https://www.youtube.com/results?search_query=Eagles+Hotel+California+bass+cover+tab", "tab": "https://www.songsterr.com/?inst=bass&pattern=Eagles+Hotel+California"}}, {"id": 53, "title": "Fuel", "artist": "Metallica", "tuning": "Eb Standard", "links": {"original": "https://www.youtube.com/results?search_query=Metallica+Fuel+official", "live": "https://www.youtube.com/results?search_query=Metallica+Fuel+live", "bass": "https://www.youtube.com/results?search_query=Metallica+Fuel+bass+cover+tab", "tab": "https://www.songsterr.com/a/wsa/metallica-fuel-bass-tab-s12104"}}];
+const INITIAL_STATE = {"1": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "2": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "3": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "4": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "5": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "6": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "7": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "8": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "9": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "10": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "11": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "12": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "13": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "14": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "15": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "16": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "17": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "18": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "19": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "20": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "21": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "22": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "23": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "24": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "Eb Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "25": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "26": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "Eb Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "27": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "D Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "28": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "D Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "29": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "D Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "30": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "D Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "31": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "32": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "33": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "34": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "35": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "36": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "D Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "37": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "38": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "39": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "40": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "41": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "A-E-A-C-G-C (6-string custom)", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "42": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "C-E-A-D-G-C (6-string custom)", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "43": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "44": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "45": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "46": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "47": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "48": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "49": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "50": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "51": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "52": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "E Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}, "53": {"status": "Not started", "confidence": 0, "priority": "Medium", "tuning": "Eb Standard", "practiceCount": 0, "lastPracticed": "", "notes": ""}};
+const STORAGE_KEY = "bassPracticeTracker53_v1";
+const statuses = ["Not started","Learning","Can play","Memorized","Performance ready"];
+const tuningOptions = ["E Standard","Eb Standard","D Standard","A-E-A-C-G-C (6-string custom)","C-E-A-D-G-C (6-string custom)"];
+let needsOnly = false;
+
+function defaultSongState(song) {
+  return {
+    status:"Not started", confidence:0, priority:"Medium", tuning:song.tuning,
+    practiceCount:0, lastPracticed:"", notes:""
+  };
+}
+function loadState() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+    const state = {};
+    SONGS.forEach(s => state[s.id] = Object.assign(defaultSongState(s), raw[s.id] || INITIAL_STATE[s.id] || {}));
+    return state;
+  } catch(e) {
+    const state={}; SONGS.forEach(s=>state[s.id]=defaultSongState(s)); return state;
+  }
+}
+let state = loadState();
+
+/* ---------- TXT DATA FILE STORAGE ----------
+   Browsers cannot silently write arbitrary local files without permission.
+   Chrome/Edge desktop support the File System Access API, so once you connect
+   a TXT file for the current browser session, every tracker change is written
+   back to that file automatically. Safari/iOS can still Load/Save TXT manually.
+*/
+let dataFileHandle = null;
+let fileWriteTimer = null;
+let fileWriteInProgress = false;
+
+function dataPayload() {
+  return {
+    app: "Bass Practice Tracker",
+    version: 2,
+    songCount: SONGS.length,
+    savedAt: new Date().toISOString(),
+    state
+  };
+}
+
+function dataText() {
+  return JSON.stringify(dataPayload(), null, 2);
+}
+
+function setFileStatus(message, ok=false) {
+  const el = document.getElementById("fileStatus");
+  if (!el) return;
+  el.innerHTML = `Data file: <b style="color:${ok ? '#71e6a6' : '#ffca3a'}">${esc(message)}</b>${ok ? ' — auto-save active.' : ' — local browser backup is still enabled.'}`;
+}
+
+async function writeConnectedFileNow() {
+  if (!dataFileHandle || fileWriteInProgress) return;
+  fileWriteInProgress = true;
+  try {
+    // Permission may need to be renewed after a page/browser restart.
+    if (dataFileHandle.queryPermission) {
+      let p = await dataFileHandle.queryPermission({mode:"readwrite"});
+      if (p !== "granted" && dataFileHandle.requestPermission) {
+        p = await dataFileHandle.requestPermission({mode:"readwrite"});
+      }
+      if (p !== "granted") {
+        setFileStatus("permission required");
+        return;
+      }
+    }
+    const writable = await dataFileHandle.createWritable();
+    await writable.write(dataText());
+    await writable.close();
+    setFileStatus(dataFileHandle.name || "connected TXT", true);
+  } catch (err) {
+    console.error(err);
+    setFileStatus("write failed");
+  } finally {
+    fileWriteInProgress = false;
+  }
+}
+
+function scheduleFileWrite() {
+  if (!dataFileHandle) return;
+  clearTimeout(fileWriteTimer);
+  fileWriteTimer = setTimeout(writeConnectedFileNow, 250);
+}
+
+function save() {
+  // Safety backup remains in browser storage.
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  updateStats();
+  scheduleFileWrite();
+  if (window.queueCloudSave) window.queueCloudSave();
+}
+
+function applyImportedObject(obj) {
+  const incoming = obj && obj.state ? obj.state : obj;
+  if (!incoming || typeof incoming !== "object") throw new Error("No tracker state found");
+  SONGS.forEach(s => {
+    const candidate = incoming[s.id] ?? incoming[String(s.id)];
+    if (candidate && typeof candidate === "object") {
+      state[s.id] = Object.assign(defaultSongState(s), state[s.id] || {}, candidate);
+    }
+  });
+  save();
+  render();
+}
+
+function tuneClass(t) {
+  if (t==="E Standard") return "tune-e";
+  if (t==="Eb Standard") return "tune-eb";
+  if (t==="D Standard") return "tune-d";
+  return "tune-custom";
+}
+function statusScore(s) {
+  return {"Not started":0,"Learning":25,"Can play":55,"Memorized":80,"Performance ready":100}[s] || 0;
+}
+function esc(v) {
+  return String(v ?? "").replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]));
+}
+function dateLabel(v) {
+  if(!v) return "Never";
+  const d=new Date(v+"T12:00:00");
+  return d.toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"});
+}
+function todayISO() {
+  const d=new Date(); const y=d.getFullYear(); const m=String(d.getMonth()+1).padStart(2,"0"); const day=String(d.getDate()).padStart(2,"0");
+  return `${y}-${m}-${day}`;
+}
+function filteredSongs() {
+  const q=document.getElementById("search").value.trim().toLowerCase();
+  const tf=document.getElementById("tuningFilter").value;
+  const sf=document.getElementById("statusFilter").value;
+  let arr=SONGS.filter(s=>{
+    const st=state[s.id];
+    const matchQ=!q || `${s.title} ${s.artist}`.toLowerCase().includes(q);
+    const matchT=!tf || (tf==="custom" ? st.tuning.includes("custom") : st.tuning===tf);
+    const matchS=!sf || st.status===sf;
+    const matchNeeds=!needsOnly || st.status!=="Performance ready" || st.confidence<4;
+    return matchQ && matchT && matchS && matchNeeds;
+  });
+  const sort=document.getElementById("sortBy").value;
+  arr.sort((a,b)=>{
+    const A=state[a.id], B=state[b.id];
+    if(sort==="needs") return (statusScore(A.status)+A.confidence*8) - (statusScore(B.status)+B.confidence*8) || a.id-b.id;
+    if(sort==="confidence") return A.confidence-B.confidence || a.id-b.id;
+    if(sort==="recent") return (A.lastPracticed||"0000").localeCompare(B.lastPracticed||"0000") || a.id-b.id;
+    if(sort==="artist") return a.artist.localeCompare(b.artist) || a.title.localeCompare(b.title);
+    return a.id-b.id;
+  });
+  return arr;
+}
+function render() {
+  const list=document.getElementById("songList");
+  const arr=filteredSongs();
+  document.getElementById("empty").style.display=arr.length?"none":"block";
+  list.innerHTML=arr.map(s=>{
+    const st=state[s.id];
+    const opts=statuses.map(x=>`<option ${x===st.status?"selected":""}>${x}</option>`).join("");
+    const tuneOpts=tuningOptions.map(x=>`<option ${x===st.tuning?"selected":""}>${esc(x)}</option>`).join("");
+    const pri=["High","Medium","Low"].map(x=>`<option ${x===st.priority?"selected":""}>${x}</option>`).join("");
+    const conf=[1,2,3,4,5].map(n=>`<button class="${n<=st.confidence?"on":""}" data-act="conf" data-id="${s.id}" data-val="${n}" aria-label="Confidence ${n}">${n}</button>`).join("");
+    const today=st.lastPracticed===todayISO();
+    return `<article class="song ${st.status==="Performance ready"?"ready":""}" data-id="${s.id}">
+      <div class="song-top">
+        <div class="num">${String(s.id).padStart(2,"0")}</div>
+        <div><div class="title">${esc(s.title)}</div><div class="artist">${esc(s.artist)}</div></div>
+        <div class="status-cell"><select class="status" data-act="status" data-id="${s.id}">${opts}</select></div>
+        <div class="tuning-cell"><select class="tuning-select ${tuneClass(st.tuning)}" data-act="tuning" data-id="${s.id}">${tuneOpts}</select></div>
+        <div class="confidence-cell"><div class="confidence" title="Confidence 1–5">${conf}</div></div>
+        <div class="practice-cell"><button class="practice-btn" data-act="practice" data-id="${s.id}">+ Practice</button></div>
+        <div class="priority-cell" style="display:none"><select class="priority" data-act="priority" data-id="${s.id}">${pri}</select></div>
+      </div>
+      <div class="song-bottom">
+        <div>
+          <div class="meta">
+            <span>Practiced: <b>${st.practiceCount}</b>×</span>
+            <span>Last: <b class="${today?"badge-today":""}">${today?"Today":dateLabel(st.lastPracticed)}</b></span>
+            <span class="tuning-pill ${tuneClass(st.tuning)}">${esc(st.tuning)}</span>
+          </div>
+          <textarea class="notes" data-act="notes" data-id="${s.id}" placeholder="Notes: weak section, BPM, cue, fingering…">${esc(st.notes)}</textarea>
+        </div>
+        <div class="links">
+          <a class="linkbtn" target="_blank" rel="noopener" href="${s.links.original}">Original</a>
+          <a class="linkbtn" target="_blank" rel="noopener" href="${s.links.live}">Live</a>
+          <a class="linkbtn" target="_blank" rel="noopener" href="${s.links.bass}">Bass</a>
+          <a class="linkbtn" target="_blank" rel="noopener" href="${s.links.tab}">Tab</a>
+        </div>
+      </div>
+    </article>`;
+  }).join("");
+  updateStats();
+}
+
+function updateStats() {
+  const all=SONGS.map(s=>state[s.id]);
+  const readiness=Math.round(all.reduce((sum,s)=>sum + statusScore(s.status)*.7 + s.confidence*6,0)/all.length);
+  const ready=all.filter(s=>s.status==="Performance ready").length;
+  const today=todayISO();
+  const todayN=all.filter(s=>s.lastPracticed===today).length;
+  const sessions=all.reduce((n,s)=>n+(s.practiceCount||0),0);
+  document.getElementById("overallPct").textContent=readiness+"%";
+  document.getElementById("overallBar").style.width=readiness+"%";
+  document.getElementById("readyCount").textContent=`${ready} / ${SONGS.length}`;
+  document.getElementById("todayCount").textContent=todayN;
+  document.getElementById("sessionCount").textContent=sessions;
+}
+
+document.getElementById("songList").addEventListener("click",e=>{
+  const el=e.target.closest("[data-act]"); if(!el) return;
+  const id=Number(el.dataset.id), act=el.dataset.act;
+  if(act==="conf") {
+    const v=Number(el.dataset.val);
+    state[id].confidence = state[id].confidence===v ? 0 : v;
+    save(); render();
+  }
+  if(act==="practice") {
+    state[id].practiceCount=(state[id].practiceCount||0)+1;
+    state[id].lastPracticed=todayISO();
+    if(state[id].status==="Not started") state[id].status="Learning";
+    save(); render();
+  }
+});
+document.getElementById("songList").addEventListener("change",e=>{
+  const el=e.target; const id=Number(el.dataset.id); if(!id) return;
+  if(el.dataset.act==="status") state[id].status=el.value;
+  if(el.dataset.act==="tuning") state[id].tuning=el.value;
+  if(el.dataset.act==="priority") state[id].priority=el.value;
+  save(); render();
+});
+document.getElementById("songList").addEventListener("input",e=>{
+  const el=e.target; const id=Number(el.dataset.id); if(el.dataset.act!=="notes"||!id) return;
+  state[id].notes=el.value; save();
+});
+
+["search","tuningFilter","statusFilter","sortBy"].forEach(id=>{
+  document.getElementById(id).addEventListener(id==="search"?"input":"change",render);
+});
+document.getElementById("practiceFilterBtn").onclick=()=>{
+  needsOnly=!needsOnly;
+  document.getElementById("practiceFilterBtn").textContent=needsOnly?"Show all":"Needs practice";
+  render();
+};
+
+// ---------- TXT file controls ----------
+const connectBtn = document.getElementById("connectFileBtn");
+const loadTxtBtn = document.getElementById("loadTxtBtn");
+const saveTxtBtn = document.getElementById("saveTxtBtn");
+const txtFileInput = document.getElementById("txtFileInput");
+
+if (!("showSaveFilePicker" in window)) {
+  connectBtn.textContent = "TXT Auto-save: Desktop Chrome/Edge";
+  connectBtn.title = "This browser does not support direct file auto-save. Use Save TXT / Load TXT instead.";
+}
+
+connectBtn.onclick = async () => {
+  if (!("showSaveFilePicker" in window)) {
+    alert("Direct TXT auto-save is not supported by this browser. Use “Save TXT” to download your tracker data and “Load TXT” to restore it.");
+    return;
+  }
+  try {
+    const handle = await window.showSaveFilePicker({
+      suggestedName: "Bass_Practice_Data.txt",
+      types: [{
+        description: "Bass Tracker Text Data",
+        accept: {"text/plain": [".txt"]}
+      }]
+    });
+    dataFileHandle = handle;
+
+    // If the selected existing file already contains tracker data, offer to load it.
+    try {
+      const file = await handle.getFile();
+      const existing = (await file.text()).trim();
+      if (existing) {
+        const parsed = JSON.parse(existing);
+        if (parsed && (parsed.state || parsed["1"])) {
+          if (confirm("This TXT file already contains tracker data. Load it now?")) {
+            applyImportedObject(parsed);
+          }
+        }
+      }
+    } catch (_) {
+      // A brand-new/empty file is normal.
+    }
+
+    await writeConnectedFileNow();
+  } catch (err) {
+    if (err && err.name !== "AbortError") {
+      console.error(err);
+      alert("Could not connect the TXT data file.");
+    }
+  }
+};
+
+saveTxtBtn.onclick = () => {
+  const blob = new Blob([dataText()], {type:"text/plain;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  const d = new Date();
+  const stamp = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+  a.href = url;
+  a.download = `Bass_Practice_Data_${stamp}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1500);
+};
+
+loadTxtBtn.onclick = () => {
+  txtFileInput.value = "";
+  txtFileInput.click();
+};
+
+txtFileInput.onchange = async () => {
+  const file = txtFileInput.files && txtFileInput.files[0];
+  if (!file) return;
+  try {
+    const parsed = JSON.parse(await file.text());
+    applyImportedObject(parsed);
+    setFileStatus(`loaded ${file.name}`, false);
+    alert("Tracker data loaded from TXT.");
+  } catch (err) {
+    console.error(err);
+    alert("Could not read this TXT file. It must be a Bass Practice Tracker data file.");
+  }
+};
+
+document.getElementById("resetBtn").onclick=()=>{
+  if(confirm("Reset all practice progress, confidence scores and notes?")) {
+    state={}; SONGS.forEach(s=>state[s.id]=defaultSongState(s)); save(); render();
+  }
+};
+
+render();
+</script>
+<script src="cloud.js"></script>
+</body>
+</html>
